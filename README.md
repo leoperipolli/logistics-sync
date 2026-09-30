@@ -32,7 +32,7 @@ flowchart LR
 
 For each carrier, three times a day:
 
-1. **Extract:** download the carrier's reports. Depending on the portal, that means plain HTTP with session cookies, an NTLM-protected SSRS report, HTML table scraping, or a call to my [RPA API](https://github.com/leopp18/rpa-engine) when the portal only works in a real browser.
+1. **Extract:** download the carrier's reports. Depending on the portal, that means plain HTTP with session cookies, an NTLM-protected SSRS report, HTML table scraping, or a call to my [RPA API](https://github.com/leoperipolli/rpa-engine) when the portal only works in a real browser.
 2. **Transform:** parse CSV/XLSX/HTML, normalize dates, city names and each carrier's status vocabulary into one set of statuses (`recebido`, `em_manifesto`, `em_rota`, `entregue`, `tratativa`).
 3. **Load (incremental):** load the last 60 days of that carrier from the database, classify each parcel and run only the write it needs.
 4. **Report:** save an execution log with counts per case, and send a WhatsApp message on success or failure.
