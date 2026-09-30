@@ -1,0 +1,9 @@
+[project]
+name = "logistics-sync"
+version = "1.0.0"
+description = "Async ETL that syncs delivery status from carrier portals into Postgres"
+requires-python = ">=3.12"
+
+[tool.pytest.ini_options]
+pythonpath = ["."]
+testpaths = ["tests"]
