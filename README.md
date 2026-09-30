@@ -2,7 +2,7 @@
 
 An async Python ETL that collects delivery status from several carrier portals, compares it with a Postgres database and writes only what changed. It feeds a logistics control tower (a dashboard with SLA, due dates and at-risk parcels).
 
-It replaced a set of n8n workflows and cut each full sync from **~25–30 min to ~10 min**.
+It replaced a set of n8n workflows and cut each full sync from **~30 min to ~10 min**.
 
 > **Note:** this is a sanitized copy of a system I built and ran in production at a last-mile logistics company. Carrier names, URLs, endpoints, credentials and client data were removed or replaced with placeholders (`transportadora_a` … `transportadora_e`, `*.example.com`). One carrier integration was left out on purpose. The code comments and identifiers are in Portuguese, the language of the team that used it.
 
@@ -93,34 +93,3 @@ sql/schema.sql          tables, constraints and triggers
 tests/                  parser, normalizer, classification and pipeline tests
 ```
 
-## Running
-
-```bash
-cp .env.example .env          # fill in database and carrier settings
-psql "$DATABASE_URL" -f sql/schema.sql
-
-# local
-pip install -r requirements-dev.txt
-python cli.py run transportadora_a --dry-run   # fetch and classify without writing
-python main.py                                 # start the scheduler
-
-# docker
-docker compose up -d --build
-```
-
-Tests don't need a database or network:
-
-```bash
-pytest
-```
-
-## Adding a carrier
-
-1. Create `transportadoras/transportadora_x.py` extending `Transportadora` (one report) or `TransportadoraDupla` (two reports).
-2. Implement `buscar_dados()` (download) and the parse method(s).
-3. Add a status mapping in `lib/normalizar.py`.
-4. Register it in `lib/runner.py` and add its schedule in `main.py`.
-
-## Screenshots
-
-<!-- TODO: add docs/img/execucoes.png (execution log with fake data) and docs/img/whatsapp.png (alert message with the number blurred) -->
